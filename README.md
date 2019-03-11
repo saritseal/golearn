@@ -1,0 +1,1 @@
+The objective of this project is to learn Go as a language, and while doing so explore the NLP algorithms. The intention is only for learning and should not be reused in any form of production deployment.
