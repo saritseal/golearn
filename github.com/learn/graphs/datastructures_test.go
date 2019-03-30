@@ -26,6 +26,7 @@ func TestCreateDirectedEdge(t *testing.T) {
 
 	prop := make(GraphProperties)
 	key := Key("name")
+	prop[key] = "testvertex"
 	prop[key] = "testedge"
 
 	edge := CreateDirectedEdge(prop, vertexFrom, vertexTo)
@@ -36,13 +37,11 @@ func BenchmarkCreateVertex(t *testing.B) {
 	for i := 0; i < t.N; i++ {
 		prop := make(GraphProperties)
 		key := Key("name")
-		prop[key] = "testvertex"
-
+		prop[key] = "testvertexFrom"
 		CreateVertex(prop)
 		//log.Println(vertex)
 	}
 }
-
 func BenchmarkCreateDirectedEdge(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -88,7 +87,7 @@ func BenchmarkParallelEdgeCreate(b *testing.B) {
 	})
 }
 
-func TestCreateGraph(t *testing.T) {
+func createGraph() *Graph {
 	graph := CreateGraph()
 
 	propFromEd := make(GraphProperties)
@@ -112,7 +111,19 @@ func TestCreateGraph(t *testing.T) {
 
 	edge := CreateDirectedEdge(prop, vertexFrom, vertexTo)
 
-	graph.AddVertex(*vertexFromEd).AddVertex(*vertexFrom).AddVertex(*vertexTo).AddEdge(*edge)
+	graph.AddVertex(vertexFromEd).AddVertex(vertexFrom).AddVertex(vertexTo).AddEdge(edge)
 
-	log.Println(*graph)
+	return graph
+}
+
+func TestCreateGraph(t *testing.T) {
+	graph := createGraph()
+	log.Println(graph)
+}
+
+func TestFindAll(T *testing.T) {
+	graph := createGraph()
+	for _, vtx := range graph.getVertexList() {
+		log.Println("connections", vtx.id, vtx.GetVertexConnections())
+	}
 }
